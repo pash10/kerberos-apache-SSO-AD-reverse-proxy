@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+  proxy:
+    image: kerberos-apache:V2.0.0.0
+    pull_policy: never
+    container_name: kerbros-apache-front
+    hostname: sh-proxy.reseht.it
+    ports:
+      - 18182:8182
+      - 15173:15173
+      - 14108:14108
+    dns:
+      - 10.0.0.99
+    privileged: true
+    stop_signal: SIGRTMIN+3
+    # REQUIRED for systemd in container
+    tmpfs:
+      - /run
+      - /run/lock
+    volumes:
+      # REQUIRED for systemd in container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+      # ---- keep all your stuff ----
+      - ./apache2.conf:/etc/apache2/apache2.conf:ro
+      - ./krb5.conf:/etc/krb5.conf:ro
+      - ./krb5.keytab:/etc/krb5.keytab
+      - ./share/:/opt/debs
+      - ./apache/ssl:/etc/apache2/apache/ssl:ro
+      - ./sssd.conf:/etc/sssd/sssd.conf:ro
+      - ./nsswitch.conf:/etc/nsswitch.conf:ro
+      - sssd-db:/var/lib/sss
+      - sssd-run:/run/sssd
+      - dbus-run:/run/dbus
+      - ./resolv.conf:/etc/resolv.conf:ro
+      #- /etc/machine-id:/etc/machine-id
+      - ./dbus/sssd-ifp-allow-apache.conf:/etc/dbus-1/system.d/sssd-ifp-allow-apache.conf:ro
+      #- ./sys/fs/cgroups:/sys/fs/cgroups:ro
+      # --------------------------------
+
+    networks:
+      - internal
+
+    extra_hosts:
+      - 'ad-server.Reshet.IT:10.0.0.99'
+
+    # IMPORTANT: remove tini
+    # init: true   <-- REMOVE THIS
+
+    # IMPORTANT: systemd must be PID1
+    command: ["/sbin/init"]
+networks:
+  internal:
+    driver: bridge
+
+
+volumes:
+  sssd-db:
+  sssd-run:
+  dbus-run:
+
