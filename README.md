@@ -5,7 +5,7 @@ This repository contains a **working, minimal** configuration for an **Apache re
 - Authenticates users via **Kerberos SSO** (GSSAPI / Negotiate)
 - Resolves the authenticated user and **AD group membership** using **SSSD**
 - Forwards identity to a backend app using HTTP headers (example: `X-User`, `X-User-Groups`)
-- Proxies traffic to an internal backend (example: `http://127.0.0.1:5173/`)
+- Proxies traffic to an internal backend (example: `http://127.0.0.1:8080/`)
 
 This is **not a tutorial** on Kerberos / Apache / SSSD fundamentals.  
 It’s a “known-good config pack” you can adapt in a real environment.
@@ -84,7 +84,7 @@ Typical responsibilities:
 Docker Compose file to run the service.
 
 Typical responsibilities:
-- Expose proxy port (example: `15173`)
+- Expose proxy port (example: `18080`)
 - Mount configs (if using bind mounts)
 - Provide required capabilities / tmpfs / volumes (depends on SSSD + DBus style)
 - Define networking and the backend target
