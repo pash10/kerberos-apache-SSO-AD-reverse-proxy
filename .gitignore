@@ -1,1 +1,14 @@
 .DS_Store
+.env
+.env.*
+!.env.example
+*.keytab
+*.key
+*.pem
+*.pfx
+*.p12
+*.secret
+secrets/
+apache/ssl/
+config/local/
+*.log
