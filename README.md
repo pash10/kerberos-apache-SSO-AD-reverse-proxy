@@ -124,3 +124,7 @@ You will need to provide locally:
 Using Compose (example):
 ```bash
 docker compose -f ker-compose.yaml up --build
+
+
+## Security review (draft)
+The checked-in realm, hosts and group DN are illustrative only. Configure real values locally, set AD_DNS_IP, and use a read-only keytab under secrets/. The example still uses privileged systemd and is bound to loopback pending a deployment-specific permissions and TLS review. Do not deploy as-is. Validate Apache listener/port mappings, TLS, Kerberos login, group authorization, header spoofing and backend isolation before use. Do not expose the backend directly. Verify whether impersonation is needed before enabling it. Review all historical refs for sensitive configuration.
